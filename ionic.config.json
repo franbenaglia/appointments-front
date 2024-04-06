@@ -1,0 +1,7 @@
+{
+  "name": "appointments",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
