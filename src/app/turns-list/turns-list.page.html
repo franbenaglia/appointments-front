@@ -3,14 +3,19 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Turns</ion-title>
+    <ion-title>turns-list</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">turn</ion-title>
+      <ion-title size="large">turns-list</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-list>
+    <app-turn *ngFor="let message of getMessages()" [message]="message"></app-turn>
+  </ion-list>
+
 </ion-content>

@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TurnPage } from './turn.page';
+import { TurnsListPage } from './turns-list.page';
 
-describe('TurnPage', () => {
-  let component: TurnPage;
-  let fixture: ComponentFixture<TurnPage>;
+describe('TurnsListPage', () => {
+  let component: TurnsListPage;
+  let fixture: ComponentFixture<TurnsListPage>;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TurnPage);
+    fixture = TestBed.createComponent(TurnsListPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
