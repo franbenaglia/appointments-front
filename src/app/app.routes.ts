@@ -16,7 +16,7 @@ export const routes: Routes = [
       import('./folder/folder.page').then((m) => m.FolderPage),
   },
   {
-    path: 'turn-detail/:id',
+    path: 'turn-detail/:_id',
     loadComponent: () =>
       import('./turn-detail/turn-detail.page').then(m => m.TurnDetailPage)
   },

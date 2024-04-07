@@ -15,7 +15,14 @@
   </ion-header>
 
   <ion-list>
-    <app-turn *ngFor="let message of getMessages()" [message]="message"></app-turn>
+    <!--app-turn *ngFor="let message of getMessages()" [message]="message"></app-turn-->
+
+    <app-turn *ngFor="let turn of getTurns()" [turn]="turn"></app-turn>
+
   </ion-list>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>

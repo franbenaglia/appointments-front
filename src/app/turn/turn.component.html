@@ -1,14 +1,15 @@
-<ion-item *ngIf="message" [routerLink]="'/turn-detail/' + message.id" [detail]="false">
-  <div slot="start" [class]="!message.read ? 'dot dot-unread' : 'dot'"></div>
+<ion-item *ngIf="turn" [routerLink]="'/turn-detail/' + turn._id" [detail]="false">
+  <!--div slot="start" [class]="!message.read ? 'dot dot-unread' : 'dot'"></div-->
   <ion-label class="ion-text-wrap">
     <h2>
-      {{ message.fromName }}
+      {{ turn.date }}
+      {{ turn._id }}
       <span class="date">
-        <ion-note>{{ message.date }}</ion-note>
+        <!--ion-note>{{ message.date }}</ion-note-->
         <ion-icon aria-hidden="true" name="chevron-forward" size="small" *ngIf="isIos()"></ion-icon>
       </span>
     </h2>
-    <h3>{{ message.subject }}</h3>
+    <h3>{{ turn.email }}</h3>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
       tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
