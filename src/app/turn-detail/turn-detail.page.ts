@@ -2,10 +2,11 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonLabel, IonNote, IonMenuButton, IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, Platform, IonItem, IonIcon } from '@ionic/angular/standalone';
-import { Message, Turn, TurnsService } from '../services/turns.service';
+import { TurnsService } from '../services/turns.service';
 import { ActivatedRoute } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { personCircle } from 'ionicons/icons';
+import { Turn } from '../model/turn';
 
 @Component({
   selector: 'app-turn-detail',

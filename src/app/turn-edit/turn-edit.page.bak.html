@@ -1,0 +1,84 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>turn edit</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">turn edit</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-button id="present-alert">Click Me</ion-button>
+  <ion-alert trigger="present-alert" header="A Short Title Is Best" subHeader="A Sub Header Is Optional"
+    message="A message should be a short, complete sentence." [buttons]="alertButtons"></ion-alert>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Card Title</ion-card-title>
+      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      Here's a small text description for the card content. Nothing more, nothing less.
+    </ion-card-content>
+  </ion-card>
+
+  <ion-datetime-button datetime="datetime"></ion-datetime-button>
+
+  <ion-modal [keepContentsMounted]="true">
+    <ng-template>
+      <ion-datetime id="datetime"></ion-datetime>
+    </ng-template>
+  </ion-modal>
+
+
+
+  <ion-grid>
+    <ion-row>
+      <ion-col><ion-button>Default</ion-button></ion-col>
+      <ion-col><ion-button [disabled]="true">Disabled</ion-button></ion-col>
+      <ion-col><ion-button id="open-loading">Show Loading</ion-button>
+        <ion-loading trigger="open-loading" message="Dismissing after 3 seconds..."
+          duration="3000"></ion-loading></ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col><ion-checkbox>I agree to the terms and conditions</ion-checkbox></ion-col>
+      <ion-col><ion-icon name="logo-ionic" size="large" color="primary"></ion-icon></ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-input label="Input with placeholder" placeholder="Enter company name"></ion-input>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-textarea label="Regular textarea" placeholder="Type something here"></ion-textarea>
+      </ion-col>
+    </ion-row>
+
+    <ion-row><ion-toggle [checked]="true">Checked Toggle</ion-toggle><br /><br /></ion-row>
+
+  </ion-grid>
+
+
+  <ion-list>
+    <ion-item>
+      <ion-select label="Default label" placeholder="Favorite Fruit">
+        <ion-select-option value="apple">Apple</ion-select-option>
+        <ion-select-option value="banana">Banana</ion-select-option>
+        <ion-select-option value="orange">Orange</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+
+
+</ion-content>

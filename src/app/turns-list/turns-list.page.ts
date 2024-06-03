@@ -2,9 +2,10 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonMenuButton, IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonList, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/angular/standalone';
-import { Message, Turn, TurnsService } from '../services/turns.service';
 import { TurnComponent } from '../turn/turn.component';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
+import { Turn } from '../model/turn';
+import { TurnsService } from '../services/turns.service';
 
 const pageSize: number = 5;
 
@@ -33,10 +34,6 @@ export class TurnsListPage implements OnInit {
     return this.turns;
   }
 
-  getMessages(): Message[] {
-    return this.data.getMessages();
-  }
-
   getNextTurns(): void {
     this.data.getPaginated(this.pageNumber, pageSize).subscribe(
       data => {
@@ -51,7 +48,7 @@ export class TurnsListPage implements OnInit {
     this.getNextTurns();
     setTimeout(() => {
       (ev as InfiniteScrollCustomEvent).target.complete();
-    }, 6500);
+    }, 2500);
   }
 
 }

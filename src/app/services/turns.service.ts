@@ -1,168 +1,81 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
-
-export interface Message {
-  fromName: string;
-  subject: string;
-  date: string;
-  id: number;
-  read: boolean;
-}
-
-export interface Turn {
-  _id: string;
-  date: Date;
-  email: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-}
+import { Observable, from } from 'rxjs';
+import { Turn } from '../model/turn';
+import { environment } from 'src/environments/environment';
+import { GetResult, Preferences } from '@capacitor/preferences';
+import { UserService } from './user.service';
 
 type ApiResponse = { page: number, per_page: number, total: number, total_pages: number, results: Turn[] }
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class TurnsService {
 
+  //TODO capacitor httpclent plugin?
   httpClient = inject(HttpClient);
+  userService = inject(UserService);
 
-  public messages: Message[] = [
-    {
-      fromName: 'Matt Chorsey',
-      subject: 'New event: Trip to Vegas',
-      date: '9:32 AM',
-      id: 0,
-      read: false
-    },
-    {
-      fromName: 'Lauren Ruthford',
-      subject: 'Long time no chat',
-      date: '6:12 AM',
-      id: 1,
-      read: false
-    },
-    {
-      fromName: 'Jordan Firth',
-      subject: 'Report Results',
-      date: '4:55 AM',
-      id: 2,
-      read: false
-    },
-    {
-      fromName: 'Bill Thomas',
-      subject: 'The situation',
-      date: 'Yesterday',
-      id: 3,
-      read: false
-    },
-    {
-      fromName: 'Joanne Pollan',
-      subject: 'Updated invitation: Swim lessons',
-      date: 'Yesterday',
-      id: 4,
-      read: false
-    },
-    {
-      fromName: 'Andrea Cornerston',
-      subject: 'Last minute ask',
-      date: 'Yesterday',
-      id: 5,
-      read: false
-    },
-    {
-      fromName: 'Moe Chamont',
-      subject: 'Family Calendar - Version 1',
-      date: 'Last Week',
-      id: 6,
-      read: false
-    },
-    {
-      fromName: 'Kelly Richardson',
-      subject: 'Placeholder Headhots',
-      date: 'Last Week',
-      id: 7,
-      read: false
-    },
-    {
-      fromName: 'Matt Chorsey',
-      subject: 'New event: Trip to Vegas',
-      date: '9:32 AM',
-      id: 8,
-      read: false
-    },
-    {
-      fromName: 'Lauren Ruthford',
-      subject: 'Long time no chat',
-      date: '6:12 AM',
-      id: 9,
-      read: false
-    },
-    {
-      fromName: 'Jordan Firth',
-      subject: 'Report Results',
-      date: '4:55 AM',
-      id: 10,
-      read: false
-    },
-    {
-      fromName: 'Bill Thomas',
-      subject: 'The situation',
-      date: 'Yesterday',
-      id: 11,
-      read: false
-    },
-    {
-      fromName: 'Joanne Pollan',
-      subject: 'Updated invitation: Swim lessons',
-      date: 'Yesterday',
-      id: 12,
-      read: false
-    },
-    {
-      fromName: 'Andrea Cornerston',
-      subject: 'Last minute ask',
-      date: 'Yesterday',
-      id: 13,
-      read: false
-    },
-    {
-      fromName: 'Moe Chamont',
-      subject: 'Family Calendar - Version 1',
-      date: 'Last Week',
-      id: 14,
-      read: false
-    },
-    {
-      fromName: 'Kelly Richardson',
-      subject: 'Placeholder Headhots',
-      date: 'Last Week',
-      id: 15,
-      read: false
-    }
-  ];
+  urlresourceserver: string = environment.resourceserver;
 
-  constructor() { }
+  baseURL: string = this.urlresourceserver + "/turn/";
+
+  token: string;
+
+  constructor() {
+    from(this.userService.getTokenJwt()).subscribe(t => {
+      this.token = t.value;
+    });
+  }
 
   getAll(): Observable<ApiResponse> {
-    return this.httpClient.get<ApiResponse>('http://localhost:3000/turn');
+    return this.httpClient.get<ApiResponse>(this.baseURL);
   }
 
   getTurnById(id: string): Observable<Turn> {
-    return this.httpClient.get<Turn>('http://localhost:3000/turn/'+ id);
+    return this.httpClient.get<Turn>(this.baseURL + id,
+      { headers: new HttpHeaders({ "Authorization": "Bearer " + this.token }) });
   }
 
   getPaginated(pageNumber: number, pageSize: number): Observable<ApiResponse> {
-    return this.httpClient.get<ApiResponse>('http://localhost:3000/turn/' + pageNumber + '/' + pageSize);
+    return this.httpClient.get<ApiResponse>(this.baseURL + pageNumber + '/' + pageSize);
   }
 
-  public getMessages(): Message[] {
-    return this.messages;
+  addTurn(turn: Turn): Observable<Turn> {
+
+    const body = JSON.stringify(turn);
+
+    const headers: HttpHeaders = new HttpHeaders()
+      .append('Content-Type', 'application/json')
+      .append('Access-Control-Allow-Headers', '*')
+      .append('Access-Control-Allow-Methods', '*')
+      .append('Access-Control-Allow-Origin', '*');
+
+    return this.httpClient.post<Turn>(this.baseURL,
+      body, { headers: headers });
   }
 
-  public getMessageById(id: number): Message {
-    return this.messages[id];
+  updateTurn(turn: Turn): Observable<Turn> {
+
+    const body = JSON.stringify(turn);
+
+    let id: String = turn._id;
+
+    const headers: HttpHeaders = new HttpHeaders()
+      .append('Content-Type', 'application/json')
+      .append('Access-Control-Allow-Headers', '*')
+      .append('Access-Control-Allow-Methods', '*')
+      .append('Access-Control-Allow-Origin', '*');
+
+    return this.httpClient.put<Turn>(this.baseURL + id, body,
+      { headers: headers });
   }
+
+
+  deleteTurn(id: string): Observable<Turn> {
+    return this.httpClient.delete<Turn>(this.baseURL + id);
+  }
+
+
 }
