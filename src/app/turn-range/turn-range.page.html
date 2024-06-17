@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>&nbsp;&nbsp;&nbsp;Turn</ion-title>
+    <ion-title>&nbsp;&nbsp;&nbsp;Turn Range</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -8,7 +8,7 @@
 
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Turn edit</ion-title>
+      <ion-title size="large">Turn range</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -23,22 +23,7 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
       <ion-item>
-        <ion-input [readonly]="true" formControlName="firstName" label="First Name"
-          placeholder="Enter name"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-input [readonly]="true" formControlName="lastName" label="Last Name"
-          placeholder="Enter last name"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-input [readonly]="true" formControlName="email" label="Email" type="email"
-          placeholder="email@domain.com"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-input formControlName="phone" label="Telephone" type="tel" placeholder="888-888-8888"></ion-input>
+        <ion-input formControlName="eventName" label="Event Name" placeholder="Enter event name"></ion-input>
       </ion-item>
 
       <ion-item>
@@ -53,8 +38,6 @@
           <span slot="title">Select a Reservation Date</span>
           <ion-buttons slot="buttons">
             <ion-button color="danger" (click)="datetime.reset()">Reset</ion-button>
-            <!--ion-button color="primary" (click)="datetime.cancel()">Never mind</ion-button>
-            <ion-button color="primary" (click)="datetime.confirm()">All Set</ion-button-->
           </ion-buttons>
         </ion-datetime>
       </ion-item>

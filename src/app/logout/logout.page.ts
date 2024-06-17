@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton } from '@ionic/angular/standalone';
-import { UserService } from '../services/user.service';
+import { AuthService } from '../services/auth.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -16,13 +16,13 @@ export class LogoutPage implements OnInit {
 
   urllocalserver: string = environment.localserver;
 
-  constructor(private userService: UserService) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
   }
 
   logout() {
-    this.userService.logout();
+    this.authService.logout();
     window.location.assign(this.urllocalserver);
   }
 

@@ -15,6 +15,9 @@
     </ion-toolbar>
   </ion-header>
 
+  <ion-toast position="top" positionAnchor="header" [isOpen]="showMessage" message="Login fail."
+    [duration]="4000" (didDismiss)="setOpen(false)"></ion-toast>
+
   <ion-list lines="inset">
 
     <ion-list-header>
@@ -32,11 +35,20 @@
       </ion-item>
 
       <ion-item>
-        <ion-button type="submit" shape="round" color="danger" size="default">Accept</ion-button>
+        <ion-button type="submit" [disabled]="!form.valid" shape="round" color="danger"
+          size="default">Accept</ion-button>
       </ion-item>
 
       <ion-item>
-        <ion-button type="button" (click)="googleOauth2()" shape="round" color="success" size="default">Google Oauth2</ion-button>
+        <ion-button type="button" (click)="googleOauth2()" shape="round" color="medium"
+          size="default">Google&nbsp;<ion-icon name="logo-google"></ion-icon></ion-button>
+        <ion-button type="button" (click)="githubOauth2()" shape="round" color="light"
+          size="default">Github&nbsp;<ion-icon name="logo-github"></ion-icon></ion-button>
+      </ion-item>
+
+      <ion-item>
+        <ion-button type="button" (click)="register()" shape="round" color="warning"
+          size="default">Register</ion-button>
       </ion-item>
 
     </form>

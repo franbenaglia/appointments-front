@@ -1,23 +1,13 @@
 <ion-item *ngIf="turn" [routerLink]="'/turn-detail/' + turn._id" [detail]="false">
-  <!--div slot="start" [class]="!message.read ? 'dot dot-unread' : 'dot'"></div-->
   <ion-label class="ion-text-wrap">
     <h2>
-      {{ turn.date }}
-      {{ turn._id }}
-      <span class="date">
-        <!--ion-note>{{ message.date }}</ion-note-->
-        <ion-icon aria-hidden="true" name="chevron-forward" size="small" *ngIf="isIos()"></ion-icon>
-      </span>
+      {{ turn.date | date:'dd-MM-yyyy'}}
     </h2>
-    <h3>{{ turn.email }}</h3>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-      est laborum.
-    </p>
+    <h2>
+      {{ turn.date | date:'HH:mm:ss'}}
+    </h2>
+    <h3>{{ turn.user?.email }}</h3>
+    <h3>{{ turn.cancelUser ? 'Cancelled' : '' }}  {{ turn.cancelAdmin ? 'Cancelled By Admin' : '' }}</h3>
   </ion-label>
+  <ion-button color="danger" (click)="cancel()">Cancelar</ion-button>
 </ion-item>

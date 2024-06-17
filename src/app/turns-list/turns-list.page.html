@@ -1,9 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>turns-list</ion-title>
+    <ion-title>&nbsp;&nbsp;&nbsp;List Turns</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,8 +8,11 @@
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">turns-list</ion-title>
+      
     </ion-toolbar>
   </ion-header>
+
+  <ion-searchbar placeholder="Search by email" [debounce]="300" (ionClear)="handleCancel($event)" (ionCancel)="handleCancel($event)" show-cancel-button="always" (ionInput)="handleInput($event)"></ion-searchbar>
 
   <ion-list>
     <!--app-turn *ngFor="let message of getMessages()" [message]="message"></app-turn-->

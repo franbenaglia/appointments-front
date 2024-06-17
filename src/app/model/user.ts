@@ -7,5 +7,7 @@ export class User {
     public firstName: string;
     public lastName: string;
     public password: string;
+    public phone: string;
+    public role: string;
 
 }

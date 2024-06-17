@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'folder/inbox',
-    pathMatch: 'full',
-  },
+  //{
+  //  path: '',
+  //  redirectTo: 'folder/inbox',
+  //  pathMatch: 'full',
+  //},
   {
     path: 'folder/turns-edit',
     loadComponent: () => import('./turn-edit/turn-edit.page').then(m => m.TurnEditPage)
@@ -19,16 +19,16 @@ export const routes: Routes = [
     loadComponent: () => import('./login/login.page').then(m => m.LoginPage)
   },
   {
-    path: 'success_oauth2',
-    loadComponent: () => import('./success-oauth2/success-oauth2.component').then(m => m.SuccessOauth2Component)
-  },
-  {
     path: 'folder/register',
     loadComponent: () => import('./register/register.page').then(m => m.RegisterPage)
   },
   {
     path: 'folder/logout',
     loadComponent: () => import('./logout/logout.page').then( m => m.LogoutPage)
+  },
+  {
+    path: 'folder/turn-range',
+    loadComponent: () => import('./turn-range/turn-range.page').then( m => m.TurnRangePage)
   },
   {
     path: 'folder/:id',
@@ -40,6 +40,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./turn-detail/turn-detail.page').then(m => m.TurnDetailPage)
   },
+ 
 
 
 ];

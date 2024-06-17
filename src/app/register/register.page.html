@@ -21,6 +21,9 @@
       <ion-label>Complete:</ion-label>
     </ion-list-header>
 
+    <ion-toast position="top" positionAnchor="header" [isOpen]="isToastOpen" [message]="message" [duration]="interval"
+      (didDismiss)="setOpen(false)"></ion-toast>
+
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
       <ion-item>
@@ -36,11 +39,20 @@
       </ion-item>
 
       <ion-item>
-        <ion-input formControlName="password" label="Password" type="password" placeholder=""></ion-input>
+        <ion-input formControlName="password" label="Password" type="password" placeholder="password"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-button type="submit" shape="round" color="danger" size="default">Accept</ion-button>
+        <ion-input formControlName="passwordb" label="Confirm password" type="password" placeholder="password"></ion-input>
+      </ion-item>
+
+    <ion-text color="danger"  *ngIf="(form.controls.passwordb.touched || form.controls.password.touched) && form.controls.passwordb.errors?.['passwordMismatch']">
+      Passwords does not match
+    </ion-text>
+
+      <ion-item>
+        <ion-button type="submit" [disabled]="!form.valid" shape="round" color="danger"
+          size="default">Accept</ion-button>
       </ion-item>
 
     </form>

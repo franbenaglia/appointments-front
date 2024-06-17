@@ -6,15 +6,15 @@ import { Turn } from '../model/turn';
 import { TurnsService } from '../services/turns.service';
 import { User } from '../model/user';
 import { UserService } from '../services/user.service';
-
+import { AvailableRangeTurns } from '../model/availablerangeturns';
 @Component({
-  selector: 'app-turn-edit',
-  templateUrl: './turn-edit.page.html',
-  styleUrls: ['./turn-edit.page.scss'],
+  selector: 'app-turn-range',
+  templateUrl: './turn-range.page.html',
+  styleUrls: ['./turn-range.page.scss'],
   standalone: true,
   imports: [IonToast, IonListHeader, IonToggle, IonSelect, IonSelectOption, IonList, IonLoading, IonTextarea, IonInput, IonCol, IonRow, IonGrid, IonCheckbox, IonAlert, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard, IonButton, IonItem, IonIcon, IonNote, IonLabel, IonModal, IonDatetimeButton, IonDatetime, IonMenuButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule]
 })
-export class TurnEditPage implements OnInit {
+export class TurnRangePage implements OnInit {
 
   @ViewChild('datetime', { static: false }) datetime: any;
 
@@ -24,11 +24,11 @@ export class TurnEditPage implements OnInit {
   message: string = '';
   currentDate: any;
 
-  dayValues: number[];
-  hourValues: number[];
-  minuteValues: number[];
-  minDate: string;
-  maxDate: string;
+  dayValues: number[] = [5, 10, 15, 16, 20, 25, 30];
+  hourValues: number[] = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+  minuteValues: number[] = [0, 30];
+  minDate: string = "2024-06-01T09:00:00";
+  maxDate: string = "2024-07-15T17:59:59";
 
   isWeekday = (dateString: string) => {
     const date = new Date(dateString);
@@ -37,12 +37,6 @@ export class TurnEditPage implements OnInit {
   };
 
   ngOnInit() {
-
-    this.userService.getUser().subscribe(user => {
-      this.user = user;
-      this.load();
-    }
-    );
 
     this.turnsService.getAvailableTurns('firstEvent').subscribe(av => {
       this.dayValues = av[0].dayValues;
@@ -54,7 +48,6 @@ export class TurnEditPage implements OnInit {
   }
 
   ngAfterViewInit() {
-    //this.datetime.
     this.currentDate = new Date().toISOString();
   }
 
@@ -66,20 +59,16 @@ export class TurnEditPage implements OnInit {
 
   public form = new FormGroup({
     id: new FormControl(),
-    "firstName": new FormControl("", Validators.required),
-    "lastName": new FormControl("", Validators.required),
-    "email": new FormControl("", Validators.required),
-    "phone": new FormControl("", Validators.required),
+    "eventName": new FormControl("", Validators.required),
     "date": new FormControl("", Validators.required),
   });
 
   onSubmit() {
 
-    let t: Turn = Object.assign(new Turn(), this.form.value);
-    t.user = this.user;
+    let t: AvailableRangeTurns = Object.assign(new AvailableRangeTurns(), this.form.value);
 
-    this.turnsService.addTurn(t).subscribe(t => {
-      this.message = 'Success! Turn accepted.';
+    this.turnsService.createAvailableTurns(t).subscribe(t => {
+      this.message = 'Success! Range Turn accepted.';
       this.setOpen(true);
     },
       error => {
@@ -95,34 +84,12 @@ export class TurnEditPage implements OnInit {
 
   load() {
     this.form.patchValue({
-      firstName: this.user.firstName,
-      lastName: this.user.lastName,
-      email: this.user.email,
-      phone: this.user.phone
+     
     });
   }
 
-  cancel() {
-    console.log('cancel');
-    //datetime.cancel();
-  }
+ 
 
-  confirm() {
-    console.log('confirm');
-    //datetime.confirm();
-  }
-
-  private mapToFormData(form: FormGroup): FormData {
-
-    let input = new FormData();
-    //input.append('id', !form.get('id') ? form.get('id').value : null);
-    input.append('firstname', form.get('firstname')!.value);
-    input.append('lastname', form.get('lastname')!.value);
-    input.append('email', form.get('email')!.value);
-    input.append('phone', form.get('telephone')!.value);
-    input.append('date', form.get('date')!.value);
-
-    return input;
-  }
+ 
 
 }
