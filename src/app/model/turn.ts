@@ -9,6 +9,7 @@ export class Turn {
     public user!: User;
     public cancelUser : Boolean;
     public cancelAdmin : Boolean;
+    public event: string;
 
 }
 

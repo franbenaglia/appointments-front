@@ -1,0 +1,20 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>&nbsp;&nbsp;&nbsp;List Turns range</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">turn-range-list</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list *ngFor="let aturn of aturns">
+    <ion-item [routerLink]="'/folder/turn-range/' + aturn._id" >
+       {{aturn.event}}
+    </ion-item>
+  </ion-list>
+
+</ion-content>

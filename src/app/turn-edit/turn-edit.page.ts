@@ -1,11 +1,15 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
-import { IonSelect, IonSelectOption, IonItem, IonIcon, IonNote, IonLabel, IonMenuButton, IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonDatetime, IonDatetimeButton, IonModal, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonAlert, IonCheckbox, IonGrid, IonRow, IonCol, IonInput, IonTextarea, IonLoading, IonList, IonToggle, IonListHeader, IonToast } from '@ionic/angular/standalone';
+import { IonSelect, IonSelectOption, IonItem, IonIcon, IonNote, IonLabel, IonMenuButton, IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonDatetime, IonDatetimeButton, IonModal, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonAlert, IonCheckbox, IonGrid, IonRow, IonCol, IonInput, IonTextarea, IonLoading, IonList, IonToggle, IonListHeader, IonToast, SelectChangeEventDetail } from '@ionic/angular/standalone';
 import { Turn } from '../model/turn';
 import { TurnsService } from '../services/turns.service';
 import { User } from '../model/user';
 import { UserService } from '../services/user.service';
+import { IonSelectCustomEvent } from '@ionic/core';
+import { AppService } from '../services/app.service';
+
+//const eventName: string = 'testavailable';
 
 @Component({
   selector: 'app-turn-edit',
@@ -18,23 +22,42 @@ export class TurnEditPage implements OnInit {
 
   @ViewChild('datetime', { static: false }) datetime: any;
 
-  constructor(private turnsService: TurnsService, private userService: UserService) { }
+
+  constructor(private appService: AppService, private turnsService: TurnsService, private userService: UserService) { }
 
   user: User;
   message: string = '';
   currentDate: any;
+  currentTime: any;
+  showTime: Boolean = false;
+  enableDate: boolean = true;
+  selectedDays: string[] = []; //['2024-06-19', '2024-06-03']
+  selectedHours: string[] = [];
 
   dayValues: number[];
-  hourValues: number[];
-  minuteValues: number[];
   minDate: string;
   maxDate: string;
 
-  isWeekday = (dateString: string) => {
+  hourValues: number[];
+  minuteValues: number[];
+
+  timeFree: string[] = [];
+
+  theevent: string;
+
+  isDateEnabled = (dateString: string) => {
     const date = new Date(dateString);
     const utcDay = date.getUTCDay();
-    return utcDay !== 0 && utcDay !== 6;
+    return this.dateAvailable(dateString) && this.enableDate && utcDay !== 0 && utcDay !== 6;
   };
+
+  settimevalues($event: IonSelectCustomEvent<SelectChangeEventDetail<any>>) {
+
+  }
+
+  dateAvailable(dateString: string): Boolean {
+    return !this.selectedDays.includes(dateString);
+  }
 
   ngOnInit() {
 
@@ -44,17 +67,24 @@ export class TurnEditPage implements OnInit {
     }
     );
 
-    this.turnsService.getAvailableTurns('firstEvent').subscribe(av => {
-      this.dayValues = av[0].dayValues;
-      this.hourValues = av[0].hourValues;
-      this.minuteValues = av[0].minuteValues;
-      this.minDate = av[0].minDate;
-      this.maxDate = av[0].maxDate;
-    });
+    this.appService.getTheEvent().subscribe(e => {
+      
+      this.theevent = e;
+
+      this.turnsService.getAvailableTurnsWithSelectedDates(this.theevent).subscribe(av => {
+        this.dayValues = av.range[0].dayValues;
+        this.minDate = av.range[0].minDate;
+        this.maxDate = av.range[0].maxDate;
+        this.hourValues = av.range[0].hourValues;
+        this.minuteValues = av.range[0].minuteValues;
+
+        this.selectedDays.push(...av.datesUsed.map(s => s && s.substring(0, 10)));
+      });
+    })
+
   }
 
   ngAfterViewInit() {
-    //this.datetime.
     this.currentDate = new Date().toISOString();
   }
 
@@ -71,16 +101,29 @@ export class TurnEditPage implements OnInit {
     "email": new FormControl("", Validators.required),
     "phone": new FormControl("", Validators.required),
     "date": new FormControl("", Validators.required),
+    "time": new FormControl("", Validators.required),
   });
 
   onSubmit() {
 
     let t: Turn = Object.assign(new Turn(), this.form.value);
+
     t.user = this.user;
+
+    t.event = 'testavailable';
+
+    let sdate = this.form.controls['date'].value;
+    let stime = this.form.controls['time'].value;
+    let lg: number = stime.length;
+    stime = lg === 4 ? '0' + stime : stime;
+    let stimedate = sdate.substring(0, 10) + 'T' + stime + ':00';
+
+    t.date = new Date(stimedate);
 
     this.turnsService.addTurn(t).subscribe(t => {
       this.message = 'Success! Turn accepted.';
       this.setOpen(true);
+      this.form.reset();
     },
       error => {
         this.setOpen(true);
@@ -102,14 +145,23 @@ export class TurnEditPage implements OnInit {
     });
   }
 
-  cancel() {
-    console.log('cancel');
-    //datetime.cancel();
+  handleChange() {
+
+    let sdate: string = this.form.controls['date'].value;
+
+    this.turnsService.getAvailableTurnsTimes(this.theevent, sdate).subscribe(av => {
+      this.hourValues = av.range[0].hourValues;
+      this.minuteValues = av.range[0].minuteValues;
+      this.timeFree = av.timeFree;
+      this.showTime = true;
+      this.enableDate = false;
+    });
   }
 
-  confirm() {
-    console.log('confirm');
-    //datetime.confirm();
+  handleCancel() {
+    console.log('evento ioncance');
+    this.showTime = false;
+    this.enableDate = true;
   }
 
   private mapToFormData(form: FormGroup): FormData {
@@ -121,6 +173,7 @@ export class TurnEditPage implements OnInit {
     input.append('email', form.get('email')!.value);
     input.append('phone', form.get('telephone')!.value);
     input.append('date', form.get('date')!.value);
+    input.append('time', form.get('time')!.value);
 
     return input;
   }

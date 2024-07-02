@@ -60,11 +60,11 @@ export class TurnDetailPage implements OnInit {
     }
     this.data.updateTurn(this.turn).subscribe(t => {
 
-      if (this.user.role === 'user') {
+      if (this.user.role === 'admin') {
 
         const email: Email = {
-          to: this.user.email,
-          text: 'Mr/Ms ' + this.user.firstName + ' ' + this.user.lastName + 'your turn has been cancelled',
+          to: this.turn.user.email,
+          text: 'Mr/Ms ' + this.turn.user.firstName + ' ' + this.turn.user.lastName + 'your turn has been cancelled',
           subject: 'Turn cancelled'
         };
 

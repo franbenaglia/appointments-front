@@ -12,13 +12,12 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-searchbar placeholder="Search by email" [debounce]="300" (ionClear)="handleCancel($event)" (ionCancel)="handleCancel($event)" show-cancel-button="always" (ionInput)="handleInput($event)"></ion-searchbar>
+  <ion-searchbar placeholder="Search by email" [debounce]="300" 
+  (ionClear)="handleCancel($event)" (ionCancel)="handleCancel($event)" 
+  show-cancel-button="always" (ionInput)="handleInput($event)"></ion-searchbar>
 
   <ion-list>
-    <!--app-turn *ngFor="let message of getMessages()" [message]="message"></app-turn-->
-
     <app-turn *ngFor="let turn of getTurns()" [turn]="turn"></app-turn>
-
   </ion-list>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="onIonInfinite($event)">

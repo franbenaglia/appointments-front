@@ -7,7 +7,8 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { loginInterceptor } from './app/login.interceptor';
 
 if (environment.production) {
   enableProdMode();
@@ -18,6 +19,7 @@ bootstrapApplication(AppComponent, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
     provideRouter(routes),
-    provideHttpClient(),
-  ],
+    provideHttpClient(
+      withInterceptors([loginInterceptor]))
+  ]
 });

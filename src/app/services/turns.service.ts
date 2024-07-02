@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { GetResult, Preferences } from '@capacitor/preferences';
 import { AuthService } from './auth.service';
 import { AvailableRangeTurns } from '../model/availablerangeturns';
+import { AvailableDates } from '../model/availabledates';
 
 type ApiResponse = { page: number, per_page: number, total: number, total_pages: number, results: Turn[] }
 
@@ -39,8 +40,28 @@ export class TurnsService {
 
   }
 
+  getAllEvents(): Observable<string[]> {
+    return this.httpClient.get<string[]>(this.baseURL + 'allEvents');
+  }
+
+  getAvailableRangeTurnById(id: string): Observable<AvailableRangeTurns> {
+    return this.httpClient.get<AvailableRangeTurns>(this.baseURL + 'availableRangeById/' + id);
+  }
+
+  getAvailableRangeTurns(): Observable<AvailableRangeTurns[]> {
+    return this.httpClient.get<AvailableRangeTurns[]>(this.baseURL + 'availableRange');
+  }
+
   getAvailableTurns(event: String): Observable<AvailableRangeTurns> {
     return this.httpClient.get<AvailableRangeTurns>(this.baseURL + 'availableRange/' + event);
+  }
+
+  getAvailableTurnsWithSelectedDates(event: String): Observable<AvailableDates> {
+    return this.httpClient.get<AvailableDates>(this.baseURL + 'availableDates/' + event);
+  }
+
+  getAvailableTurnsTimes(event: String, date: String): Observable<AvailableDates> {
+    return this.httpClient.get<AvailableDates>(this.baseURL + 'availableTimesDates/' + event + '/' + date);
   }
 
   createAvailableTurns(rangeTurn: AvailableRangeTurns): Observable<AvailableRangeTurns> {
@@ -54,7 +75,7 @@ export class TurnsService {
       .append('Access-Control-Allow-Origin', '*');
 
     return this.httpClient.post<AvailableRangeTurns>(this.baseURL + 'availableRange',
-     body, { headers: headers });
+      body, { headers: headers });
   }
 
   updateAvailableTurns(rangeTurn: AvailableRangeTurns): Observable<AvailableRangeTurns> {
@@ -67,8 +88,8 @@ export class TurnsService {
       .append('Access-Control-Allow-Methods', '*')
       .append('Access-Control-Allow-Origin', '*');
 
-    return this.httpClient.put<AvailableRangeTurns>(this.baseURL + 'availableRange/' + rangeTurn.id,
-     body, { headers: headers });
+    return this.httpClient.put<AvailableRangeTurns>(this.baseURL + 'availableRange/' + rangeTurn._id,
+      body, { headers: headers });
   }
 
   getAll(): Observable<ApiResponse> {

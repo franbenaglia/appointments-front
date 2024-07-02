@@ -88,6 +88,7 @@ export class TurnsListPage implements OnInit {
   }
 
   handleCancel(event) {
+    this.pageNumber = 1;
     this.getNextTurns();
   }
 
