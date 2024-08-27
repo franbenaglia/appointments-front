@@ -33,9 +33,14 @@ export class TurnsListPage implements OnInit {
 
   user: User = Object.assign(new User(), '');
 
+  private mail: string = '';
+
   ngOnInit() {
     this.userService.getUser().subscribe(user => {
       this.user = user;
+      if (user.role !== 'admin') {
+        this.mail = user.email;
+      }
       this.getNextTurns();
     })
   }
@@ -50,24 +55,14 @@ export class TurnsListPage implements OnInit {
 
   getNextTurns(): void {
 
-    if (this.user.role === 'user') {
-
-      this.data.getPaginatedByUser(this.pageNumber, pageSize, this.user.email).subscribe(
-        data => {
-          this.turns.push(...data.results);
+    this.data.getPaginatedByUser(this.pageNumber, pageSize, this.mail).subscribe(
+      data => {
+        if (this.pageNumber === 1) {
+          this.turns.length = 0;
         }
-      );
-
-    } else {
-
-      this.data.getPaginated(this.pageNumber, pageSize).subscribe(
-        data => {
-          this.turns.push(...data.results);
-        }
-      );
-
-    }
-
+        this.turns.push(...data.results);
+      }
+    );
   }
 
   onIonInfinite(ev: InfiniteScrollCustomEvent) {
@@ -81,7 +76,9 @@ export class TurnsListPage implements OnInit {
   handleInput(event) {
     if (event.target.value) {
       const query = event.target.value.toLowerCase();
-      this.turns = this.turns.filter((d) => d.user.email.toLowerCase().indexOf(query) > -1);
+      this.mail = query;
+      this.pageNumber = 1;
+      this.getNextTurns();
     } else {
       this.getNextTurns();
     }

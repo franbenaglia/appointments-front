@@ -26,6 +26,7 @@ export class TurnDetailPage implements OnInit {
   private data = inject(TurnsService);
   private activatedRoute = inject(ActivatedRoute);
   private platform = inject(Platform);
+  cancelDisabled: boolean = false;
 
   constructor(private emailService: EmailService, private userService: UserService) {
     addIcons({ personCircle });
@@ -39,6 +40,9 @@ export class TurnDetailPage implements OnInit {
 
     this.data.getTurnById(id).subscribe(turn => {
       this.turn = turn;
+      if (turn.cancelAdmin || turn.cancelUser) {
+        this.cancelDisabled = true;
+      }
     });
 
     this.userService.getUser().subscribe(user => {
@@ -60,11 +64,13 @@ export class TurnDetailPage implements OnInit {
     }
     this.data.updateTurn(this.turn).subscribe(t => {
 
+      this.cancelDisabled = true;
+
       if (this.user.role === 'admin') {
 
         const email: Email = {
           to: this.turn.user.email,
-          text: 'Mr/Ms ' + this.turn.user.firstName + ' ' + this.turn.user.lastName + 'your turn has been cancelled',
+          text: 'Mr/Ms ' + this.turn.user.firstName + ' ' + this.turn.user.lastName + ' your turn has been cancelled',
           subject: 'Turn cancelled'
         };
 

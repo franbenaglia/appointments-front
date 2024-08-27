@@ -26,6 +26,7 @@ export class TurnComponent implements OnInit {
   @Input() turn!: Turn;
 
   user: User;
+  cancelVisible: boolean = true;
 
   isIos() {
     return this.platform.is('ios')
@@ -41,6 +42,10 @@ export class TurnComponent implements OnInit {
       this.user = user;
     }
     );
+
+    if (this.turn && (this.turn.cancelAdmin || this.turn.cancelUser)) {
+      this.cancelVisible = false;
+    }
 
   }
 
@@ -60,9 +65,9 @@ export class TurnComponent implements OnInit {
           subject: 'Turn cancelled'
         };
 
-        //this.emailService.sendEmail(email).subscribe(x =>
-        //  console.log('email sended')
-        //);
+        this.emailService.sendEmail(email).subscribe(x =>
+          console.log('email sended')
+        );
 
       }
 

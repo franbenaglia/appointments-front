@@ -34,5 +34,5 @@
       {{ turn.cancelUser ? 'Cancelled' : '' }} {{ turn.cancelAdmin ? 'Cancelled By Admin' : '' }}
     </ion-label>
   </ion-item>
-  <ion-button color="danger" (click)="cancel()">Cancelar</ion-button>
+  <ion-button [disabled]="cancelDisabled" color="danger" (click)="cancel()">Cancelar</ion-button>
 </ion-content>

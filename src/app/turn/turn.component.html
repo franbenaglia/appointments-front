@@ -9,5 +9,5 @@
     <h3>{{ turn.user?.email }}</h3>
     <h3>{{ turn.cancelUser ? 'Cancelled' : '' }}  {{ turn.cancelAdmin ? 'Cancelled By Admin' : '' }}</h3>
   </ion-label>
-  <ion-button color="danger" (click)="cancel()">Cancelar</ion-button>
+  <ion-button color="danger" *ngIf="cancelVisible" (click)="cancel()">Cancelar</ion-button>
 </ion-item>
