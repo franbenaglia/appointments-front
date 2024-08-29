@@ -11,7 +11,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-list *ngFor="let aturn of aturns ; let i = index;" [inset]="true">
+  <ion-list *ngFor="let aturn of getEvents() ; let i = index;" [inset]="true">
     <ion-item [routerLink]="'/folder/turn-range/' + aturn._id" [ngClass]="(i % 2 == 0) ? 'odd' : 'even'">
       <ion-label> {{aturn.event}}</ion-label>
       <ion-icon name="send-outline"></ion-icon>

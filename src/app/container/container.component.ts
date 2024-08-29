@@ -23,7 +23,7 @@ export class AppContainer implements OnInit {
   private appLinks = [
     { id: 1, title: 'Turns', url: '/folder/turns-list', icon: 'paper-plane' },
     { id: 2, title: 'Select Event', url: '/folder/select-event', icon: 'paper-plane' },
-    { id: 3, title: 'Add Turn', url: '/folder/turns-edit', icon: 'paper-plane' },
+    { id: 3, title: 'New Turn', url: '/folder/turns-edit', icon: 'paper-plane' },
     { id: 6, title: 'Logout', url: '/folder/logout', icon: 'paper-plane' },
   ];
 
@@ -55,8 +55,8 @@ export class AppContainer implements OnInit {
               next: (user) => {
                 this.user = user;
                 if (this.user.role === 'admin') {
-                  this.appLinks.push({ id: 4, title: 'Turn Range', url: '/folder/turn-range', icon: 'paper-plane' });
-                  this.appLinks.push({ id: 5, title: 'Turn Range List', url: 'folder/turn-range-list', icon: 'paper-plane' });
+                  this.appLinks.push({ id: 4, title: 'Add new event', url: '/folder/turn-range', icon: 'paper-plane' });
+                  this.appLinks.push({ id: 5, title: 'Event List', url: 'folder/turn-range-list', icon: 'paper-plane' });
                 }
                 this.appLinks.sort((a, b) => { return a.id - b.id });
                 this.appPages.push(... this.appLinks);

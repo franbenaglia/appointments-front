@@ -64,7 +64,15 @@ export class TurnsService {
     return this.httpClient.get<AvailableDates>(this.baseURL + 'availableTimesDates/' + event + '/' + date);
   }
 
-  createAvailableTurns(rangeTurn: AvailableRangeTurns): Observable<AvailableRangeTurns> {
+
+  createOrUpdateAvailableTurns(rangeTurn: AvailableRangeTurns): Observable<any> {
+    if (!rangeTurn._id) {
+      return this.createAvailableTurns(rangeTurn);
+    }
+    return this.updateAvailableTurns(rangeTurn);
+  }
+
+  private createAvailableTurns(rangeTurn: AvailableRangeTurns): Observable<any> {
 
     const body = JSON.stringify(rangeTurn);
 
@@ -78,7 +86,7 @@ export class TurnsService {
       body, { headers: headers });
   }
 
-  updateAvailableTurns(rangeTurn: AvailableRangeTurns): Observable<AvailableRangeTurns> {
+  private updateAvailableTurns(rangeTurn: AvailableRangeTurns): Observable<AvailableRangeTurns> {
 
     const body = JSON.stringify(rangeTurn);
 
@@ -88,7 +96,7 @@ export class TurnsService {
       .append('Access-Control-Allow-Methods', '*')
       .append('Access-Control-Allow-Origin', '*');
 
-    return this.httpClient.put<AvailableRangeTurns>(this.baseURL + 'availableRange/' + rangeTurn._id,
+    return this.httpClient.put<AvailableRangeTurns>(this.baseURL + 'availableRange/' + rangeTurn.event,
       body, { headers: headers });
   }
 

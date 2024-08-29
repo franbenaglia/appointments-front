@@ -7,6 +7,7 @@ import { AvailableRangeTurns } from '../model/availablerangeturns';
 import { RouterLink } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { airplane, sendOutline } from 'ionicons/icons';
+import { EventService } from '../services/event.service';
 
 @Component({
   selector: 'app-turn-range-list',
@@ -17,22 +18,24 @@ import { airplane, sendOutline } from 'ionicons/icons';
 })
 export class TurnRangeListPage implements OnInit {
 
-  constructor() {
-
+  constructor(private eventService: EventService) {
     addIcons({ sendOutline });
-
   }
 
   private turnService = inject(TurnsService);
 
-  aturns: AvailableRangeTurns[] = [];
+  //aturns: AvailableRangeTurns[] = [];
 
   ngOnInit() {
+    /*
+        this.turnService.getAvailableRangeTurns().subscribe(aturns => {
+          this.aturns.push(...aturns);
+        });
+    */
+  }
 
-    this.turnService.getAvailableRangeTurns().subscribe(aturns => {
-      this.aturns.push(...aturns);
-    });
-
+  getEvents() {
+    return this.eventService.getEvents();
   }
 
 }

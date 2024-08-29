@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, Validators, ReactiveFormsModule, FormArray, FormBuilder } from '@angular/forms';
 import { IonSelect, IonSelectOption, IonItem, IonIcon, IonNote, IonLabel, IonMenuButton, IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonDatetime, IonDatetimeButton, IonModal, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonAlert, IonCheckbox, IonGrid, IonRow, IonCol, IonInput, IonTextarea, IonLoading, IonList, IonToggle, IonListHeader, IonToast, IonRadioGroup, IonRadio } from '@ionic/angular/standalone';
@@ -7,6 +7,7 @@ import { User } from '../model/user';
 import { UserService } from '../services/user.service';
 import { AvailableRangeTurns } from '../model/availablerangeturns';
 import { ActivatedRoute } from '@angular/router';
+import { EventService } from '../services/event.service';
 @Component({
   selector: 'app-turn-range',
   templateUrl: './turn-range.page.html',
@@ -18,7 +19,8 @@ export class TurnRangePage implements OnInit {
 
   private activatedRoute = inject(ActivatedRoute);
 
-  constructor(private fb: FormBuilder, private turnsService: TurnsService, private userService: UserService) { }
+  constructor(private eventService: EventService, private fb: FormBuilder, private turnsService: TurnsService, private userService: UserService) { }
+
 
   user: User;
   message: string = '';
@@ -26,7 +28,7 @@ export class TurnRangePage implements OnInit {
   dates: string[] = [];
   minDate: string;
   maxDate: string;
-  weekends: any = true;
+  weekends: string = 'false';
   dayValues: number[] = [];
   hourValues: number[] = [];
   minuteValues: number[] = [];
@@ -36,7 +38,11 @@ export class TurnRangePage implements OnInit {
 
   art!: AvailableRangeTurns;
 
-  @ViewChild(IonDatetime) datetime: IonDatetime;
+  @ViewChild('sdatetime') sdatetime: IonDatetime;
+
+  @ViewChild('datemin') datemin: IonDatetime;
+
+  @ViewChild('datemax') datemax: IonDatetime;
 
   ngOnInit() {
 
@@ -53,11 +59,14 @@ export class TurnRangePage implements OnInit {
   load() {
     this.form.patchValue({
       eventName: this.art[0].event,
-      weekends: this.art[0].weekends,
       daysincluded: this.art[0].dayValues,
       hoursincluded: this.art[0].hourValues,
       minutesincluded: this.art[0].minuteValues,
     });
+    this.datemin.value = this.art[0].minDate;
+    this.datemax.value = this.art[0].maxDate;
+    this.sdatetime.value = this.art[0].specificdays;
+    this.weekends = this.art[0].weekends ? new Boolean(this.art[0].weekends).toString() : 'false';
   }
 
   ngAfterViewInit() {
@@ -103,11 +112,9 @@ export class TurnRangePage implements OnInit {
   public form = this.fb.group({
     id: new FormControl(),
     "eventName": new FormControl("", Validators.required),
-    "weekends": new FormControl("", Validators.required),
     "daysincluded": new FormControl("", Validators.required),
     "hoursincluded": new FormControl("", Validators.required),
-    "minutesincluded": new FormControl("", Validators.required),
-    //"dates": this.fb.array([{}])
+    "minutesincluded": new FormControl("", Validators.required)
   })
 
 
@@ -117,24 +124,37 @@ export class TurnRangePage implements OnInit {
     t.specificdays.push(... this.dates);
     t.minDate = this.minDate;
     t.maxDate = this.maxDate;
-    t.weekends = this.weekends;
+    t.weekends = this.weekends === 'true';
     t.dayValues = this.dayValues;
     t.hourValues = this.hourValues;
     t.minuteValues = this.minuteValues;
 
-    this.turnsService.createAvailableTurns(t).subscribe(t => {
-      this.message = 'Success! Range Turn accepted.';
-      this.setOpen(true);
-    },
-      error => {
+    this.turnsService.createOrUpdateAvailableTurns(t).subscribe({
+      next: t => {
+        this.eventService.addEvent(t.turnRange);
+        this.message = 'Success! Range Turn accepted.';
+        this.clearForm();
+        this.setOpen(true);
+      },
+      error: error => {
         this.setOpen(true);
         this.message = 'Submit fail';
         console.log(error);
-
       }
 
-
-    );
+    });
   }
+
+
+  clearForm() {
+
+    this.form.reset();
+    this.datemax.reset();
+    this.datemin.reset();
+    this.sdatetime.reset();
+    this.weekends = 'false';
+
+  }
+
 
 }

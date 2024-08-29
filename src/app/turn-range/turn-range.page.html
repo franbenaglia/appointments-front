@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" (load)="datetime.reset()">
+<ion-content [fullscreen]="true" (load)="sdatetime.reset()">
 
   <ion-header collapse="condense">
     <ion-toolbar>
@@ -63,14 +63,14 @@
       </ion-item>
 
       <ion-item>
-        <ion-datetime id="datetime" #datetime presentation="date" [multiple]="true"
-          (ionChange)="setspecifics(datetime.value)" hourCycle="h23" display-format="DD/MM/YYYY HH:mm"
+        <ion-datetime id="sdatetime" #sdatetime presentation="date" [multiple]="true"
+          (ionChange)="setspecifics(sdatetime.value)" hourCycle="h23" display-format="DD/MM/YYYY HH:mm"
           preferWheel="false" [firstDayOfWeek]="1">
           <span slot="title">Select the Dates</span>
           <ion-buttons slot="buttons">
-            <ion-button color="danger" (click)="datetime.reset()">Reset</ion-button>
-            <ion-button color="success" (click)="datetime.confirm(true)">Confirm</ion-button>
-            <ion-button color="warning" (click)="datetime.cancel(true)">Cancel</ion-button>
+            <ion-button color="danger" (click)="sdatetime.reset()">Reset</ion-button>
+            <ion-button color="success" (click)="sdatetime.confirm(true)">Confirm</ion-button>
+            <ion-button color="warning" (click)="sdatetime.cancel(true)">Cancel</ion-button>
           </ion-buttons>
         </ion-datetime>
       </ion-item>
@@ -81,7 +81,7 @@
 
       <ion-item>
         <ion-list>
-          <ion-radio-group formControlName="weekends" (ionChange)="setweekend($event)">
+          <ion-radio-group id="weekends"  [value]="weekends" (ionChange)="setweekend($event)">
             <ion-radio value="true">Yes</ion-radio>
             <ion-radio value="false">No</ion-radio>
           </ion-radio-group>
@@ -95,8 +95,8 @@
       <ion-item>
         <ion-list>
           <ion-item>
-            <ion-select  formControlName="daysincluded"  aria-label="Days in" placeholder="Select days in" [multiple]="true"
-              (ionChange)="setdayvalues($event)">
+            <ion-select formControlName="daysincluded" aria-label="Days in" placeholder="Select days in"
+              [multiple]="true" (ionChange)="setdayvalues($event)">
               <ion-select-option *ngFor="let day of days" [value]="day">{{ day }}</ion-select-option>
             </ion-select>
           </ion-item>
@@ -110,8 +110,8 @@
       <ion-item>
         <ion-list>
           <ion-item>
-            <ion-select formControlName="hoursincluded"  aria-label="Hours in" placeholder="Select hours in" [multiple]="true"
-              (ionChange)="sethourvalues($event)">
+            <ion-select formControlName="hoursincluded" aria-label="Hours in" placeholder="Select hours in"
+              [multiple]="true" (ionChange)="sethourvalues($event)">
               <ion-select-option *ngFor="let hour of hours" [value]="hour">{{ hour }}</ion-select-option>
             </ion-select>
           </ion-item>
@@ -125,8 +125,8 @@
       <ion-item>
         <ion-list>
           <ion-item>
-            <ion-select formControlName="minutesincluded" aria-label="Minutes in" placeholder="Select minutess in" [multiple]="true"
-              (ionChange)="setminutevalues($event)">
+            <ion-select formControlName="minutesincluded" aria-label="Minutes in" placeholder="Select minutess in"
+              [multiple]="true" (ionChange)="setminutevalues($event)">
               <ion-select-option *ngFor="let minute of minutes" [value]="minute">{{ minute }}</ion-select-option>
             </ion-select>
           </ion-item>
@@ -135,8 +135,7 @@
 
       <ion-item>
 
-        <ion-button type="submit" [disabled]="!form.valid" shape="round" color="danger"
-          size="default">Accept</ion-button>
+        <ion-button type="submit" [disabled]="false" shape="round" color="danger" size="default">Accept</ion-button>
 
       </ion-item>
 

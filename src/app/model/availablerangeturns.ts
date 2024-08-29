@@ -10,7 +10,7 @@ export class AvailableRangeTurns {
     public minuteValues: number[] = [];
     public minDate: string;
     public maxDate: string;
-    public weekends: boolean;
+    public weekends: Boolean;
     public specificdays: string[] = [];
 
 }
