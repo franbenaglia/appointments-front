@@ -81,7 +81,7 @@
 
       <ion-item>
         <ion-list>
-          <ion-radio-group id="weekends"  [value]="weekends" (ionChange)="setweekend($event)">
+          <ion-radio-group id="weekends" [value]="weekends" (ionChange)="setweekend($event)">
             <ion-radio value="true">Yes</ion-radio>
             <ion-radio value="false">No</ion-radio>
           </ion-radio-group>
@@ -136,6 +136,12 @@
       <ion-item>
 
         <ion-button type="submit" [disabled]="false" shape="round" color="danger" size="default">Accept</ion-button>
+
+      </ion-item>
+
+      <ion-item *ngIf="isDeleteButtonVisible">
+
+        <ion-button shape="round" color="warning" size="default" (click)="delete()">Delete</ion-button>
 
       </ion-item>
 

@@ -1,0 +1,12 @@
+<div class="credit-card">
+  <div>
+    <div #cardInfo>
+    </div>
+  </div>
+  <div  class="error" *ngIf="cardError">
+    {{cardError}}
+  </div>
+  <ion-button [disabled]="disabled" (click)="getToken()">Pay</ion-button>
+  <ion-toast position="top" positionAnchor="header" [isOpen]="isToastOpen" [message]="message" [duration]="3500"
+        (didDismiss)="setOpen(false)"></ion-toast>
+</div>

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonSelect, IonSelectOption, IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonItem, SelectChangeEventDetail } from '@ionic/angular/standalone';
 import { TurnsService } from '../services/turns.service';
 import { AppService } from '../services/app.service';
+import { EventService } from '../services/event.service';
 
 @Component({
   selector: 'app-select-event',
@@ -14,17 +15,17 @@ import { AppService } from '../services/app.service';
 })
 export class SelectEventPage implements OnInit {
 
-  constructor(private appService: AppService, private turnsService: TurnsService) { }
+  constructor(private appService: AppService, private eventService: EventService) { }
 
-  events: string[] = [];
 
   ngOnInit() {
 
-    this.turnsService.getAllEvents().subscribe(events => {
-      this.events.push(...events);
-    });
-
   }
+
+  getEvents() {
+    return this.eventService.getEvents();
+  }
+
 
   setEvent($event: any) {
     this.appService.setTheEvent($event.detail.value);

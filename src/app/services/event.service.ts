@@ -24,6 +24,12 @@ export class EventService {
     this.event.push(e);
   }
 
+  deleteEvent(e: any) {
+    let x = this.event.filter(item => item._id !== e._id);
+    this.event.length = 0;
+    this.event.push(...x);
+  }
+
   getEvents(): Array<AvailableRangeTurns> {
     return this.event;
   }

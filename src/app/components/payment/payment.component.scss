@@ -1,0 +1,25 @@
+.credit-card {
+    width: 400px;
+    height: 150;
+    border: 1px solid black;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    font-size: 33px;
+    color: blue;
+    background-color: lightgrey;
+}
+
+.error {
+    width: 200px;
+    height: 30;
+    border: 1px solid black;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    font-size: 14px;
+    color: red;
+    background-color: lightgrey;
+}

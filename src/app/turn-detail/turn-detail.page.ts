@@ -11,13 +11,14 @@ import { UserService } from '../services/user.service';
 import { User } from '../model/user';
 import { EmailService } from '../services/email.service';
 import { Email } from '../model/email';
+import { PaymentComponent } from "../components/payment/payment.component";
 
 @Component({
   selector: 'app-turn-detail',
   templateUrl: './turn-detail.page.html',
   styleUrls: ['./turn-detail.page.scss'],
   standalone: true,
-  imports: [IonButton, IonIcon, IonItem, IonMenuButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonLabel, IonNote]
+  imports: [IonButton, IonIcon, IonItem, IonMenuButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonLabel, IonNote, PaymentComponent]
 })
 export class TurnDetailPage implements OnInit {
 

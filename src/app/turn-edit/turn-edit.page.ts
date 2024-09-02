@@ -9,8 +9,6 @@ import { UserService } from '../services/user.service';
 import { IonSelectCustomEvent } from '@ionic/core';
 import { AppService } from '../services/app.service';
 
-//const eventName: string = 'testavailable';
-
 @Component({
   selector: 'app-turn-edit',
   templateUrl: './turn-edit.page.html',
@@ -30,8 +28,8 @@ export class TurnEditPage implements OnInit {
   currentTime: any;
   showTime: Boolean = false;
   enableDate: boolean = true;
-  selectedDays: string[] = []; 
-  invalidDays: string[] = []; 
+  selectedDays: string[] = [];
+  invalidDays: string[] = [];
   selectedHours: string[] = [];
 
   dayValues: number[];
@@ -180,9 +178,8 @@ export class TurnEditPage implements OnInit {
 
     let sdate = this.form.controls['date'].value;
     let stime = this.form.controls['time'].value;
-    let lg: number = stime.length;
-    stime = lg === 4 ? '0' + stime : stime;
-    let stimedate = sdate.substring(0, 10) + 'T' + stime + ':00';
+
+    let stimedate = this.convertDateTime(sdate, stime);
 
     t.date = new Date(stimedate);
 
@@ -200,6 +197,16 @@ export class TurnEditPage implements OnInit {
 
 
     );
+  }
+
+  private convertDateTime(sdate: string, stime: string): string {
+    
+    let doubledots: number = stime.indexOf(':');
+    stime = stime.substring(doubledots + 1) === '0' ? stime + '0' : stime;
+    let lg: number = stime.length;
+    stime = lg === 4 ? '0' + stime : stime;
+
+    return sdate.substring(0, 10) + 'T' + stime + ':00';
   }
 
   load() {

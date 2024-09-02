@@ -15,7 +15,7 @@
   <ion-list>
     <ion-item>
       <ion-select aria-label="Events" placeholder="Select the event" (ionChange)="setEvent($event)">
-        <ion-select-option *ngFor="let event of events" [value]="event">{{ event }}</ion-select-option>
+        <ion-select-option *ngFor="let event of getEvents()" [value]="event.event">{{ event.event }}</ion-select-option>
       </ion-select>
     </ion-item>
   </ion-list>

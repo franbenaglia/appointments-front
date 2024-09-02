@@ -96,7 +96,7 @@ export class TurnsService {
       .append('Access-Control-Allow-Methods', '*')
       .append('Access-Control-Allow-Origin', '*');
 
-    return this.httpClient.put<AvailableRangeTurns>(this.baseURL + 'availableRange/' + rangeTurn.event,
+    return this.httpClient.put<AvailableRangeTurns>(this.baseURL + 'availableRange/' + rangeTurn._id,
       body, { headers: headers });
   }
 
@@ -153,6 +153,10 @@ export class TurnsService {
 
   deleteTurn(id: string): Observable<Turn> {
     return this.httpClient.delete<Turn>(this.baseURL + id);
+  }
+
+  deleteRangeTurn(id: string): Observable<Turn> {
+    return this.httpClient.delete<Turn>(this.baseURL + 'deleteRange/' + id);
   }
 
 

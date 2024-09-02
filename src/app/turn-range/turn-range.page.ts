@@ -37,6 +37,7 @@ export class TurnRangePage implements OnInit {
   minutes: number[] = [0, 15, 30, 45];
 
   art!: AvailableRangeTurns;
+  isDeleteButtonVisible: boolean = false;
 
   @ViewChild('sdatetime') sdatetime: IonDatetime;
 
@@ -50,7 +51,9 @@ export class TurnRangePage implements OnInit {
 
     if (id) {
       this.turnsService.getAvailableRangeTurnById(id).subscribe(avt => {
+        this.isDeleteButtonVisible = true;
         this.art = avt;
+        this.art._id = id;
         this.load();
       });
     }
@@ -63,9 +66,14 @@ export class TurnRangePage implements OnInit {
       hoursincluded: this.art[0].hourValues,
       minutesincluded: this.art[0].minuteValues,
     });
+
     this.datemin.value = this.art[0].minDate;
     this.datemax.value = this.art[0].maxDate;
     this.sdatetime.value = this.art[0].specificdays;
+    this.dates = this.art[0].specificdays;
+    this.hourValues = this.art[0].hourValues;
+    this.minuteValues = this.art[0].minuteValues;
+    this.dayValues = this.art[0].dayValues;
     this.weekends = this.art[0].weekends ? new Boolean(this.art[0].weekends).toString() : 'false';
   }
 
@@ -128,10 +136,13 @@ export class TurnRangePage implements OnInit {
     t.dayValues = this.dayValues;
     t.hourValues = this.hourValues;
     t.minuteValues = this.minuteValues;
+    t._id = this.art._id;
 
     this.turnsService.createOrUpdateAvailableTurns(t).subscribe({
       next: t => {
-        this.eventService.addEvent(t.turnRange);
+        if (!this.art._id) {
+          this.eventService.addEvent(t.turnRange);
+        }
         this.message = 'Success! Range Turn accepted.';
         this.clearForm();
         this.setOpen(true);
@@ -145,7 +156,6 @@ export class TurnRangePage implements OnInit {
     });
   }
 
-
   clearForm() {
 
     this.form.reset();
@@ -156,5 +166,22 @@ export class TurnRangePage implements OnInit {
 
   }
 
+  delete() {
+
+    this.turnsService.deleteRangeTurn(this.art._id).subscribe({
+      next: t => {
+        this.message = 'Success! Range Turn deleted.';
+        this.eventService.deleteEvent(this.art);
+        this.clearForm();
+        this.setOpen(true);
+      },
+      error: error => {
+        this.setOpen(true);
+        this.message = 'Submit fail';
+        console.log(error);
+      }
+
+    });
+  }
 
 }
