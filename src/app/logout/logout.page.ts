@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { environment } from 'src/environments/environment';
+import { Capacitor } from '@capacitor/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-logout',
@@ -16,14 +18,19 @@ export class LogoutPage implements OnInit {
 
   urllocalserver: string = environment.localserver;
 
-  constructor(private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
   }
 
   logout() {
     this.authService.logout();
-    window.location.assign(this.urllocalserver);
+    if (!Capacitor.isNativePlatform()) {
+      window.location.assign(this.urllocalserver);
+    } else {
+      this.router.navigate((['login']));
+    }
+
   }
 
 }

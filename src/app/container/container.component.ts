@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MenuController, IonMenuButton, IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, IonHeader, IonToolbar, IonButtons, IonTitle } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -35,6 +35,12 @@ export class AppContainer implements OnInit {
 
   constructor(private appService: AppService, private userService: UserService, private authService: AuthService, private router: Router, private menuCtrl: MenuController) {
     addIcons({ logoGoogle, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp });
+    /*
+    effect(() => { //once or when signal is updated
+      let mshow = this.appService.getHiddenMenux();
+      this.showMenu = !mshow;
+    });
+*/
   }
 
   ngOnInit() {

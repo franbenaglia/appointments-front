@@ -5,7 +5,13 @@ const config: CapacitorConfig = {
   appName: 'appointments',
   webDir: 'www',
   server: {
-    androidScheme: 'https'
+    androidScheme: 'http',
+   // url: "http://192.168.1.41:3000",
+    cleartext: true
+  },
+  android: {
+    allowMixedContent: true,
+    webContentsDebuggingEnabled: true,
   }
 };
 

@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { logoGithub, logoGoogle } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-login',
@@ -36,12 +37,16 @@ export class LoginPage implements OnInit {
   });
 
   onSubmit() {
-    console.log(this.form);
     let u: User = Object.assign(new User(), this.form.value);
+
     this.authService.login(u).subscribe(
       u => {
         this.authService.setTokenJwt(u.accessToken);
-        window.location.assign(this.urllocalserver);
+        if (!Capacitor.isNativePlatform()) {
+          window.location.assign(this.urllocalserver);
+        } else {
+          this.router.navigate((['folder/landingpage']));
+        }
       }, e => {
         this.showMessage = true;
         console.log(e);

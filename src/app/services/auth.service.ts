@@ -11,6 +11,7 @@ const headers: HttpHeaders = new HttpHeaders()
   .append('Access-Control-Allow-Headers', '*')
   .append('Access-Control-Allow-Methods', '*')
   .append('Access-Control-Allow-Origin', '*');
+ // .append('Referrer-Policy','unsafe-url');
 
 @Injectable({
   providedIn: 'root'
@@ -35,10 +36,15 @@ export class AuthService {
       body, { headers: headers });
   }
 
+  test(): Observable<any> {
+    return this.httpClient.get<string[]>(this.urlresourceserver + '/',
+      { headers: headers });
+  }
+
   login(user: User): Observable<any> {
-
+    console.log('login service')
     const body = JSON.stringify(user);
-
+    console.log(body);
     return this.httpClient.post<any>(this.baseURL + '/login',
       body, { headers: headers });
   }
