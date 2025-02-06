@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  resourceserver: 'http://192.168.1.41:3000', 
+  resourceserver: 'http://172.21.97.106:3000', 
   localserver: 'http://localhost:8100'
 };
 
